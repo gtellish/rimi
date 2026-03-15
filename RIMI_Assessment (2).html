@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Risk Intelligence Maturity Index™ — Measured Progress</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ─────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  background: #F4F1E8;
+  color: #1C2B2B;
+  min-height: 100vh;
+}
+
+/* ── LAYOUT ──────────────────────────────────────────────────────────────── */
+.page-wrap {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ── MASTHEAD ─────────────────────────────────────────────────────────────── */
+.masthead {
+  border-bottom: 3px solid #2A9D8F;
+  padding: 36px 0 28px;
+  margin-bottom: 48px;
+}
+.masthead-eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .14em;
+  color: #2A9D8F;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.masthead h1 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: 400;
+  color: #1C2B2B;
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+.masthead h1 sup {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #2A9D8F;
+  vertical-align: super;
+}
+.masthead-sub {
+  font-size: 15px;
+  color: #4A5568;
+  max-width: 560px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+.masthead-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.tag {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 3px;
+  letter-spacing: .04em;
+}
+.tag-navy  { background: #EEF2FA; color: #1A2E5A; }
+.tag-teal  { background: #E1F5EE; color: #0F6E56; }
+.tag-gold  { background: #FEF7EA; color: #633806; }
+
+/* ── PROGRESS ─────────────────────────────────────────────────────────────── */
+.progress-wrap {
+  margin-bottom: 32px;
+}
+.progress-track {
+  height: 3px;
+  background: #DDD9CF;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.progress-fill {
+  height: 100%;
+  background: #2A9D8F;
+  border-radius: 2px;
+  transition: width .4s cubic-bezier(.4,0,.2,1);
+}
+.domain-nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.dnav-btn {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: 3px;
+  border: 1.5px solid #DDD9CF;
+  background: transparent;
+  color: #4A5568;
+  cursor: pointer;
+  transition: all .15s;
+  font-family: inherit;
+}
+.dnav-btn:hover { border-color: #2A9D8F; color: #2A9D8F; }
+.dnav-btn.active { background: #1C2B2B; color: #F4F1E8; border-color: #1C2B2B; }
+.dnav-btn.done { background: #E1F5EE; color: #0F6E56; border-color: #2A9D8F; }
+
+/* ── DOMAIN SECTION ───────────────────────────────────────────────────────── */
+.domain-panel { display: none; }
+.domain-panel.active { display: block; }
+
+.domain-header {
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #DDD9CF;
+}
+.domain-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.domain-letter {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'DM Serif Display', serif;
+  flex-shrink: 0;
+}
+.domain-count {
+  font-size: 12px;
+  font-weight: 500;
+  color: #4A5568;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.domain-title {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 26px;
+  font-weight: 400;
+  color: #1C2B2B;
+  margin-bottom: 8px;
+}
+.domain-desc {
+  font-size: 15px;
+  color: #4A5568;
+  max-width: 560px;
+  line-height: 1.55;
+}
+
+/* ── QUESTIONS ───────────────────────────────────────────────────────────── */
+.question {
+  margin-bottom: 24px;
+}
+.q-num {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  color: #888;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.q-text {
+  font-size: 15px;
+  font-weight: 500;
+  color: #1C2B2B;
+  line-height: 1.55;
+  margin-bottom: 12px;
+}
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1.5px solid #DDD9CF;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #fff;
+  transition: border-color .15s, background .15s;
+  user-select: none;
+}
+.opt:hover { border-color: #2A9D8F; }
+.opt.selected { border-color: #2A9D8F; background: #F0FAF7; }
+.opt input[type=radio] { display: none; }
+.opt-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #DDD9CF;
+  flex-shrink: 0;
+  margin-top: 2px;
+  transition: all .15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.opt.selected .opt-dot {
+  border-color: #2A9D8F;
+  background: #2A9D8F;
+}
+.opt.selected .opt-dot::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+}
+.opt-body { flex: 1; }
+.opt-text { font-size: 14px; color: #1C2B2B; line-height: 1.45; }
+.opt-level { font-size: 12px; color: #888; margin-top: 3px; }
+
+/* ── NAV BUTTONS ─────────────────────────────────────────────────────────── */
+.nav-btns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid #DDD9CF;
+}
+.btn {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 11px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1.5px solid;
+  transition: all .15s;
+  letter-spacing: .02em;
+}
+.btn-ghost {
+  background: transparent;
+  color: #4A5568;
+  border-color: #DDD9CF;
+}
+.btn-ghost:hover { border-color: #888; color: #1C2B2B; }
+.btn-ghost:disabled { opacity: .3; cursor: default; }
+.btn-primary {
+  background: #1C2B2B;
+  color: #F4F1E8;
+  border-color: #1C2B2B;
+}
+.btn-primary:hover { background: #2A9D8F; border-color: #2A9D8F; }
+.answers-note {
+  font-size: 13px;
+  color: #888;
+}
+
+/* ── RESULTS ─────────────────────────────────────────────────────────────── */
+#results { display: none; }
+
+.results-masthead {
+  background: #1C2B2B;
+  color: #F4F1E8;
+  border-radius: 8px;
+  padding: 36px 40px;
+  margin-bottom: 36px;
+  position: relative;
+  overflow: hidden;
+}
+.results-masthead::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 6px; height: 100%;
+  background: #2A9D8F;
+}
+.results-eyebrow {
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #2A9D8F;
+  margin-bottom: 12px;
+}
+.score-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.score-big {
+  font-family: 'DM Serif Display', serif;
+  font-size: 80px;
+  line-height: 1;
+  font-weight: 400;
+}
+.score-denom {
+  font-size: 28px;
+  color: #6B8E8E;
+  padding-bottom: 8px;
+}
+.band-pill {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 6px 16px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+.results-desc {
+  font-size: 15px;
+  color: #A0B8B8;
+  line-height: 1.6;
+  max-width: 520px;
+  margin-top: 12px;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #2A9D8F;
+  margin-bottom: 16px;
+}
+
+.domain-results {
+  margin-bottom: 40px;
+}
+.dr-row {
+  padding: 16px 20px;
+  background: #fff;
+  border: 1.5px solid #DDD9CF;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  border-left-width: 4px;
+}
+.dr-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.dr-name { font-size: 15px; font-weight: 500; color: #1C2B2B; }
+.dr-score-label { font-size: 13px; font-weight: 500; }
+.dr-bar-bg { height: 6px; background: #EEE; border-radius: 3px; overflow: hidden; }
+.dr-bar-fill { height: 100%; border-radius: 3px; transition: width .8s cubic-bezier(.4,0,.2,1); }
+.dr-band { font-size: 12px; color: #888; margin-top: 5px; }
+
+.findings-section { margin-bottom: 40px; }
+.finding {
+  padding: 18px 20px;
+  background: #fff;
+  border: 1.5px solid #DDD9CF;
+  border-left: 4px solid;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+.finding-priority {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.finding h3 {
+  font-size: 15px;
+  font-weight: 500;
+  color: #1C2B2B;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.finding p { font-size: 14px; color: #4A5568; line-height: 1.55; }
+
+.cta-block {
+  background: #1C2B2B;
+  color: #F4F1E8;
+  border-radius: 8px;
+  padding: 36px 40px;
+  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+}
+.cta-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 6px; height: 100%;
+  background: #C9A227;
+}
+.cta-block h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 10px;
+  color: #F4F1E8;
+}
+.cta-block p {
+  font-size: 14px;
+  color: #A0B8B8;
+  line-height: 1.65;
+  margin-bottom: 16px;
+  max-width: 500px;
+}
+.cta-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.cta-item {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 5px;
+  padding: 12px 14px;
+}
+.cta-item-title { font-size: 13px; font-weight: 500; color: #C9A227; margin-bottom: 4px; }
+.cta-item-body { font-size: 12px; color: #8AA8A8; line-height: 1.4; }
+.contact-line { font-size: 14px; color: #6B8E8E; }
+.contact-placeholder { color: #2A9D8F; font-weight: 500; }
+
+.retake-row {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #DDD9CF;
+}
+.retake-row button {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: #4A5568;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: #DDD9CF;
+}
+.retake-row button:hover { color: #1C2B2B; }
+
+.mpri-credit {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: #fff;
+  border: 1px solid #DDD9CF;
+  border-radius: 6px;
+  margin-bottom: 24px;
+}
+.mpri-gear {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+.mpri-text { font-size: 13px; color: #4A5568; line-height: 1.5; }
+.mpri-text strong { color: #1C2B2B; }
+
+/* ── PRINT ───────────────────────────────────────────────────────────────── */
+@media print {
+  body { background: #fff; }
+  .page-wrap { max-width: 100%; padding: 0 24px; }
+  #assessment { display: none !important; }
+  #results { display: block !important; }
+  .cta-block { background: #1C2B2B; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .results-masthead { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .btn-primary { display: none; }
+  .retake-row { display: none; }
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .masthead { padding: 24px 0 20px; margin-bottom: 32px; }
+  .results-masthead, .cta-block { padding: 24px 20px 24px 30px; }
+  .score-big { font-size: 56px; }
+  .nav-btns { flex-direction: column-reverse; align-items: stretch; text-align: center; gap: 10px; }
+}
+
+/* ── ANIMATIONS ──────────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.domain-panel.active { animation: fadeUp .25s ease-out; }
+#results.show { animation: fadeUp .3s ease-out; }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- ── MASTHEAD ─────────────────────────────────────────────────────────── -->
+  <div class="masthead">
+    <div class="masthead-eyebrow">Measured Progress · Gary E. Tellish, CSP, CIT, CUSP</div>
+    <h1>Risk Intelligence Maturity Index<sup>™</sup></h1>
+    <p class="masthead-sub">Benchmark your organization's risk governance across five domains. 25 questions. Results in under 10 minutes.</p>
+    <div class="masthead-meta">
+      <span class="tag tag-navy">5 domains · RAISE framework</span>
+      <span class="tag tag-teal">Safety-critical industries</span>
+      <span class="tag tag-gold">MPRI™ methodology</span>
+    </div>
+  </div>
+
+  <!-- ── ASSESSMENT ────────────────────────────────────────────────────────── -->
+  <div id="assessment">
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+      <div class="domain-nav" id="domain-nav"></div>
+    </div>
+
+    <!-- All 5 domain panels rendered by JS -->
+    <div id="panels"></div>
+
+    <div class="nav-btns">
+      <button class="btn btn-ghost" id="btn-back" onclick="navigate(-1)" disabled>← Back</button>
+      <span class="answers-note" id="ans-note"></span>
+      <button class="btn btn-primary" id="btn-next" onclick="navigate(1)">Next domain →</button>
+    </div>
+  </div>
+
+  <!-- ── RESULTS ────────────────────────────────────────────────────────────── -->
+  <div id="results">
+    <div class="results-masthead" id="r-hero"></div>
+
+    <div class="mpri-credit">
+      <svg class="mpri-gear" viewBox="0 0 40 40" fill="none">
+        <path d="M19 4.5l-1 3.9A12 12 0 0 0 9.4 13l-3.9-1L3 16l3.2 2.3A12 12 0 0 0 6 20a12 12 0 0 0 .2 1.7L3 24l2.5 4 3.9-1A12 12 0 0 0 18 31.6l1 3.9h4l1-3.9A12 12 0 0 0 30.6 27l3.9 1 2.5-4-3.2-2.3A12 12 0 0 0 34 20a12 12 0 0 0-.2-1.7L37 16l-2.5-4-3.9 1A12 12 0 0 0 22 8.4l-1-3.9h-4z" fill="#1C2B2B" opacity=".12"/>
+        <circle cx="20" cy="20" r="8" fill="#2A9D8F" opacity=".15"/>
+        <circle cx="20" cy="20" r="4" fill="#2A9D8F"/>
+        <text x="20" y="23.5" text-anchor="middle" font-size="7" font-weight="700" fill="white" font-family="serif">M</text>
+      </svg>
+      <div class="mpri-text">
+        <strong>Measured Progress Risk Intelligence Model™ (MPRI)</strong><br>
+        Based on <em>Measured Progress: Technology, Judgment, and Leadership in the Future of Safety-Critical Work</em> (Tellish, 2026, Pane &amp; Pixel). © 2026 Gary E. Tellish, CSP, CIT, CUSP. All rights reserved.
+      </div>
+    </div>
+
+    <div class="domain-results">
+      <div class="section-label">Domain scores</div>
+      <div id="r-domains"></div>
+    </div>
+
+    <div class="findings-section">
+      <div class="section-label">Priority findings</div>
+      <div id="r-findings"></div>
+    </div>
+
+    <div class="cta-block">
+      <h2>Your RIMI score identifies where to focus next.</h2>
+      <p>A facilitated Organizational RAISE Assessment — conducted with your safety leadership team — converts these scores into specific committed actions with named owners and deadlines. The RIMI is the starting point. The assessment is where the work begins.</p>
+      <div class="cta-items">
+        <div class="cta-item">
+          <div class="cta-item-title">Organizational RAISE Assessment</div>
+          <div class="cta-item-body">Full scored review of all five RAISE elements. Written findings report. Priority action plan.</div>
+        </div>
+        <div class="cta-item">
+          <div class="cta-item-title">Annual Safety Posture Retainer</div>
+          <div class="cta-item-body">Four quarterly reviews. Year-round access. Annual posture report. $18,000/year.</div>
+        </div>
+        <div class="cta-item">
+          <div class="cta-item-title">Measured Progress Workshop</div>
+          <div class="cta-item-body">Half-day or full-day. Up to 30 participants. Book included. CMPP credit eligible.</div>
+        </div>
+      </div>
+      <div class="contact-line">
+        <a href="mailto:gary@measuredprogressmethod.com" style="color:#C9A227;text-decoration:none;">gary@measuredprogressmethod.com</a> &nbsp;·&nbsp;
+        <a href="tel:7046010220" style="color:#C9A227;text-decoration:none;">704-601-0220</a> &nbsp;·&nbsp;
+        <a href="https://www.measuredprogressmethod.com" target="_blank" style="color:#C9A227;text-decoration:none;">www.measuredprogressmethod.com</a>
+      </div>
+    </div>
+
+    <div class="retake-row">
+      <button onclick="restart()">Retake the assessment</button>
+      &nbsp;&nbsp;
+      <button onclick="window.print()">Print / save as PDF</button>
+    </div>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<script>
+const DOMAINS = [
+  {
+    id:'E', color:'#1A2E5A', light:'#EEF2FA', barColor:'#1A2E5A',
+    title:'Exposure reduction',
+    tagline:'Examining whether proximity to hazards is genuinely necessary',
+    desc:'This domain evaluates how deliberately your organization questions whether workers must stand close to hazards — or whether proximity has simply become the default.',
+    questions:[
+      {text:'When a new inspection or maintenance task is designed, how often does the team ask whether physical proximity is required — or simply assumed?',
+       opts:['Never asked — proximity is assumed standard','Occasionally, when someone raises it informally','In most task designs, as part of hazard review','Systematically in every task design, with documented rationale']},
+      {text:'In the past 12 months, how many high-exposure task categories have been formally evaluated for standoff or remote alternatives?',
+       opts:['None — no formal evaluation has occurred','One or two, on an ad-hoc basis','Several — there is a recurring evaluation process','All high-exposure tasks are reviewed on a defined schedule']},
+      {text:'When aerial inspection, remote monitoring, or automation becomes available for a task your workers currently perform in proximity, what typically happens?',
+       opts:['Nothing — no formal evaluation mechanism exists','It may be raised informally but rarely evaluated','It triggers an evaluation, though not always timely','A formal evaluation occurs with a documented decision outcome']},
+      {text:'How well does your organization track total worker-hours in high-exposure tasks over time?',
+       opts:['Not tracked — no exposure-hours data exists','Tracked informally or for specific incidents only','Tracked by task category, reviewed periodically','Tracked continuously with trend analysis and reduction targets']},
+      {text:'When proximity is reduced for a task category, how is that change documented and sustained?',
+       opts:['It is not formally documented','It is noted in incident records or emails','It is recorded in procedure updates','Documented, reflected in training, and reviewed annually']},
+    ]
+  },
+  {
+    id:'A', color:'#2A9D8F', light:'#E1F5EE', barColor:'#2A9D8F',
+    title:'Assumption examination',
+    tagline:'Testing what your organization believes to be true about its own program',
+    desc:'This domain evaluates how rigorously your organization challenges the beliefs underlying its current safety practices — particularly those that have not been tested recently.',
+    questions:[
+      {text:'How often does your safety leadership team formally examine a belief about your operation that has not been tested recently?',
+       opts:['Rarely or never — assumptions are not routinely questioned','When something goes wrong, triggering a review','Annually, as part of program evaluation','Quarterly, using a structured assumption examination process']},
+      {text:'Which best describes how your organization handles processes that have performed well for several years?',
+       opts:['Continued without review — good performance is assumed to continue','Reviewed after an incident or near-miss','Reviewed on a schedule, though not always rigorously','Reviewed rigorously regardless of recent performance']},
+      {text:'When your incident rate improves, how does your organization typically respond?',
+       opts:['Celebrates and moves on — improvement speaks for itself','Notes the improvement without investigating its cause','Investigates whether real risk reduction occurred','Analyzes whether improvement reflects genuine risk reduction or reporting changes']},
+      {text:'How well does your organization understand the failure modes of the assumptions underlying its current safety controls?',
+       opts:['Not understood — controls are trusted without analysis','Understood informally by senior staff','Documented for major control categories','Systematically analyzed and updated as conditions change']},
+      {text:'When a new regulation or industry standard changes expectations, how quickly does your organization verify its current practices against the new standard?',
+       opts:['Slowly — changes are often absorbed without formal review','After a regulatory audit or enforcement action','Within a defined timeline following the change','Immediately — change triggers a structured gap analysis']},
+    ]
+  },
+  {
+    id:'I', color:'#7B4F00', light:'#FEF7EA', barColor:'#BA7517',
+    title:'Technology interpretation',
+    tagline:'Governing analytical tools so they support judgment rather than replace it',
+    desc:'This domain evaluates whether your organization has built the governance infrastructure to use AI, sensor data, drone inspection, and predictive analytics responsibly.',
+    questions:[
+      {text:'For AI, drone inspection, or predictive analytics tools your safety program relies on — who is responsible for interpreting their outputs?',
+       opts:['No one specific — whoever receives the output acts on it','General safety staff, without defined qualifications','A named role with some relevant training','A designated role with defined qualifications and a documented override protocol']},
+      {text:'When an analytical tool produces an output that conflicts with field judgment, what happens?',
+       opts:['The tool is usually deferred to, without question','It is resolved informally, without documentation','There is a process, but it is inconsistently followed','A documented override protocol is followed consistently']},
+      {text:'Does your organization have a documented position that absence of an alert does not confirm safety?',
+       opts:['No — alerts are assumed to confirm the absence of risk','Informally understood by experienced staff','Referenced in training but not in formal procedures','Explicitly documented and communicated to all users of analytical tools']},
+      {text:'How often are the technologies your safety program relies on audited for continued accuracy against current operating conditions?',
+       opts:['Never — tools are trusted once adopted','When performance problems become visible','Annually, on a defined schedule','On a defined schedule with documented performance criteria']},
+      {text:'When a decision informed by a technology tool contributes to a safety event, can your organization reconstruct who reviewed the output and what they decided?',
+       opts:['No — decision records are not maintained','Partially, from memory or informal records','Usually, from email or system logs','Always — a decision log captures every technology-informed action']},
+    ]
+  },
+  {
+    id:'S', color:'#4A3580', light:'#F0EEFF', barColor:'#534AB7',
+    title:'Scrutiny and visibility',
+    tagline:'Seeing the risk that cannot be seen directly',
+    desc:'This domain evaluates how effectively your organization detects risk developing inside systems — conditions that standard inspection misses because they appear across time, not at a single point.',
+    questions:[
+      {text:'How regularly does your organization analyze inspection data across multiple cycles to identify patterns that a single inspection would miss?',
+       opts:['Never — inspections are reviewed individually','Occasionally, when a trend is noticed','Annually, as part of program review','Systematically, on a defined cross-period analysis schedule']},
+      {text:'For your highest-consequence asset categories, what methods exist to detect developing conditions that physical inspection cannot reveal?',
+       opts:['None — physical inspection is the primary method','Informal use of sensor or thermal data','Remote monitoring for selected assets','Structured multi-method program covering all high-consequence assets']},
+      {text:'How often does your safety leadership review data that was collected but not previously interpreted for risk patterns?',
+       opts:['Rarely — collected data is reviewed once at intake','After an incident or near-miss surfaces a pattern','Annually during program review','Quarterly, as part of a deliberate data interpretation process']},
+      {text:'Does your organization have a defined process for identifying invisible risk — conditions developing inside systems between inspection cycles?',
+       opts:['No formal process','Informal awareness among experienced staff','Referenced in program design but not systematically applied','A documented, practiced process with assigned responsibility']},
+      {text:'When your organization adopts new technology (drones, sensors, AI analytics), how well does it document what that technology cannot detect?',
+       opts:['Not documented — tools are trusted for broad coverage','Informally understood by the procurement team','Noted in tool selection documentation','Explicitly documented, trained, and reflected in inspection scope decisions']},
+    ]
+  },
+  {
+    id:'R', color:'#276749', light:'#EAF4EE', barColor:'#3B6D11',
+    title:'Responsibility and governance',
+    tagline:'Converting capability into committed action with named owners and deadlines',
+    desc:'This domain evaluates whether your organization systematically converts the ability to reduce risk into specific, tracked commitments — and whether accountability for those commitments is clearly assigned.',
+    questions:[
+      {text:'When your organization gains the capability to reduce a specific exposure — through new technology or process change — how quickly is that converted into committed action?',
+       opts:['Rarely — capability does not automatically trigger evaluation','When an incident creates urgency','Within the next annual planning cycle','Within a defined evaluation timeline, with a documented decision outcome']},
+      {text:'How are safety improvement commitments tracked after they are made?',
+       opts:['They are not formally tracked','Through informal follow-up','On a shared action log reviewed periodically','On a tracked system with named owners, deadlines, and completion verification']},
+      {text:'When a technology-informed decision contributes to a safety outcome, who accepts accountability?',
+       opts:['Accountability is unclear or diffused','Whoever was closest to the incident','The safety manager, by default','The named decision owner recorded at the time the decision was made']},
+      {text:'Does your executive leadership receive regular reporting on specific exposure-reduction commitments — completed, delayed, or deferred?',
+       opts:['No — leadership receives lagging indicators only (incident rates)','Informally, when concerns are escalated','In annual program reviews','In structured quarterly briefings with commitment status detail']},
+      {text:'If a future regulatory review required your organization to demonstrate that risk-reduction capability was evaluated and consciously acted on or deferred — how prepared would you be?',
+       opts:['Not prepared — no documentation trail exists','Partially prepared, with some records','Mostly prepared, with program documentation','Fully prepared — decision records, evaluations, and rationale are all documented']},
+    ]
+  }
+];
+
+const BANDS = [
+  {min:0,  max:24,  label:'Reactive',    color:'#E24B4A', bg:'#FCEBEB',
+   desc:'Risk management is largely incident-driven. Governance gaps are significant across most domains. Structured improvement is needed before exposure-reduction capability can be responsibly deployed at scale.'},
+  {min:25, max:49,  label:'Developing',  color:'#BA7517', bg:'#FEF3DC',
+   desc:'Some governance structures exist but are inconsistent. The organization understands risk reduction but has not systematically converted capability into sustained practice. Two or three domains need focused attention now.'},
+  {min:50, max:74,  label:'Managed',     color:'#1D9E75', bg:'#E1F5EE',
+   desc:'Risk governance is functional and mostly consistent. The organization has meaningful practices across most domains. Improving the lowest-scoring areas will produce compounding benefits over time.'},
+  {min:75, max:100, label:'Intelligent', color:'#1A2E5A', bg:'#EEF2FA',
+   desc:'The organization demonstrates a mature, continuous risk intelligence posture. Practices are documented, practiced, and reviewed. The focus should be on sustaining discipline and extending it as new capabilities emerge.'},
+];
+
+const FINDINGS = [
+  {title:'Exposure is habitual, not examined', body:'High-proximity tasks are not routinely evaluated for standoff alternatives. Distance is assumed necessary rather than verified. This is often the most tractable gap — and the most consequential to close.'},
+  {title:'Assumptions are not regularly tested', body:'Safety controls that have performed well may rest on beliefs that have not been tested recently. Familiarity has replaced evaluation in at least some program areas.'},
+  {title:'Technology outputs lack a governance layer', body:'Analytical tools are influencing decisions without a structured interpretation role, override protocol, or accountability record in place. This risk compounds as tool adoption increases.'},
+  {title:'Invisible risk is not being actively searched for', body:'Data is being collected but not analyzed across inspection cycles. Risk developing inside systems between inspections may not be visible through current methods.'},
+  {title:'Capability is not consistently converted to action', body:'Improvements are identified but not tracked to completion with named owners and deadlines. Leadership receives lagging indicators rather than commitment status.'},
+];
+
+// ── STATE ──────────────────────────────────────────────────────────────────
+const state = { domain: 0, answers: {} };
+
+function ans(d, q) { return state.answers[`${d}_${q}`]; }
+function setAns(d, q, v) { state.answers[`${d}_${q}`] = v; }
+
+function domainPct(d) {
+  let sum = 0, n = 0;
+  DOMAINS[d].questions.forEach((_, q) => { const v = ans(d, q); if (v !== undefined) { sum += v; n++; } });
+  const max = DOMAINS[d].questions.length * 3;
+  return n > 0 ? Math.round((sum / max) * 100) : 0;
+}
+
+function totalScore() {
+  let sum = 0, max = 0;
+  DOMAINS.forEach((dom, d) => {
+    dom.questions.forEach((_, q) => { const v = ans(d, q); if (v !== undefined) sum += v; });
+    max += dom.questions.length * 3;
+  });
+  return max > 0 ? Math.round((sum / max) * 100) : 0;
+}
+
+function domainDone(d) {
+  return DOMAINS[d].questions.every((_, q) => ans(d, q) !== undefined);
+}
+
+function bandFor(pct) {
+  return BANDS.find(b => pct >= b.min && pct <= b.max) || BANDS[0];
+}
+
+function bandLabelFor(pct) {
+  if (pct >= 75) return 'Intelligent';
+  if (pct >= 50) return 'Managed';
+  if (pct >= 25) return 'Developing';
+  return 'Reactive';
+}
+
+function barColorFor(pct) {
+  if (pct >= 75) return '#1A2E5A';
+  if (pct >= 50) return '#1D9E75';
+  if (pct >= 25) return '#BA7517';
+  return '#E24B4A';
+}
+
+// ── BUILD DOM ──────────────────────────────────────────────────────────────
+function buildPanels() {
+  const container = document.getElementById('panels');
+  container.innerHTML = '';
+  DOMAINS.forEach((dom, di) => {
+    const panel = document.createElement('div');
+    panel.className = 'domain-panel' + (di === 0 ? ' active' : '');
+    panel.id = `panel-${di}`;
+
+    let html = `<div class="domain-header">
+      <div class="domain-label">
+        <div class="domain-letter" style="background:${dom.light};color:${dom.color}">${dom.id}</div>
+        <span class="domain-count">Domain ${di+1} of ${DOMAINS.length}</span>
+      </div>
+      <div class="domain-title">${dom.title}</div>
+      <div class="domain-desc">${dom.desc}</div>
+    </div>`;
+
+    dom.questions.forEach((q, qi) => {
+      html += `<div class="question" id="q-${di}-${qi}">
+        <div class="q-num">Question ${qi+1} of ${dom.questions.length}</div>
+        <div class="q-text">${q.text}</div>
+        <div class="options">`;
+      q.opts.forEach((opt, oi) => {
+        const sel = ans(di, qi) === oi;
+        html += `<label class="opt${sel ? ' selected' : ''}" data-d="${di}" data-q="${qi}" data-v="${oi}">
+          <input type="radio" name="q${di}_${qi}" value="${oi}"${sel ? ' checked' : ''}>
+          <div class="opt-dot"></div>
+          <div class="opt-body">
+            <div class="opt-text">${opt}</div>
+            <div class="opt-level" style="color:${dom.color}">${['Foundational','Developing','Established','Advanced'][oi]}</div>
+          </div>
+        </label>`;
+      });
+      html += `</div></div>`;
+    });
+    panel.innerHTML = html;
+    container.appendChild(panel);
+  });
+
+  // delegated click handler
+  container.addEventListener('click', e => {
+    const lbl = e.target.closest('.opt');
+    if (!lbl) return;
+    const d = +lbl.dataset.d, q = +lbl.dataset.q, v = +lbl.dataset.v;
+    setAns(d, q, v);
+    // update UI
+    const block = document.getElementById(`q-${d}-${q}`);
+    block.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+    lbl.classList.add('selected');
+    updateNav();
+  });
+}
+
+function buildDomainNav() {
+  const nav = document.getElementById('domain-nav');
+  nav.innerHTML = '';
+  DOMAINS.forEach((dom, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'dnav-btn' + (i === state.domain ? ' active' : domainDone(i) ? ' done' : '');
+    btn.textContent = `${dom.id} — ${dom.title}`;
+    btn.onclick = () => { state.domain = i; switchPanel(); };
+    nav.appendChild(btn);
+  });
+}
+
+function switchPanel() {
+  document.querySelectorAll('.domain-panel').forEach((p, i) => {
+    p.classList.toggle('active', i === state.domain);
+  });
+  buildDomainNav();
+  updateNav();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateNav() {
+  const answered = DOMAINS[state.domain].questions.filter((_, q) => ans(state.domain, q) !== undefined).length;
+  const total = DOMAINS[state.domain].questions.length;
+  document.getElementById('ans-note').textContent = `${answered} of ${total} answered`;
+
+  const pct = Math.round((state.domain / DOMAINS.length) * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+
+  const backBtn = document.getElementById('btn-back');
+  backBtn.disabled = state.domain === 0;
+
+  const nextBtn = document.getElementById('btn-next');
+  const isLast = state.domain === DOMAINS.length - 1;
+  nextBtn.textContent = isLast ? 'View results →' : 'Next domain →';
+  buildDomainNav();
+}
+
+function navigate(dir) {
+  if (dir > 0 && state.domain < DOMAINS.length - 1) {
+    state.domain++;
+    switchPanel();
+  } else if (dir > 0 && state.domain === DOMAINS.length - 1) {
+    showResults();
+  } else if (dir < 0 && state.domain > 0) {
+    state.domain--;
+    switchPanel();
+  }
+}
+
+// ── RESULTS ────────────────────────────────────────────────────────────────
+function showResults() {
+  document.getElementById('assessment').style.display = 'none';
+  const r = document.getElementById('results');
+  r.style.display = 'block';
+  r.classList.add('show');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  const ts = totalScore();
+  const band = bandFor(ts);
+
+  // Hero
+  const answered = Object.keys(state.answers).length;
+  const total = DOMAINS.reduce((s, d) => s + d.questions.length, 0);
+  document.getElementById('r-hero').innerHTML = `
+    <div class="results-eyebrow">RIMI Assessment Results · Measured Progress</div>
+    <div class="score-row">
+      <span class="score-big" style="color:${band.color}">${ts}</span>
+      <span class="score-denom">/100</span>
+      <span class="band-pill" style="background:${band.bg};color:${band.color}">${band.label}</span>
+    </div>
+    <div style="font-size:13px;color:#6B8E8E;margin-bottom:4px">${answered} of ${total} questions answered</div>
+    <div class="results-desc">${band.desc}</div>`;
+
+  // Domain rows
+  const dc = document.getElementById('r-domains');
+  dc.innerHTML = '';
+  DOMAINS.forEach((dom, i) => {
+    const pct = domainPct(i);
+    const bc = barColorFor(pct);
+    dc.innerHTML += `<div class="dr-row" style="border-left-color:${dom.color}">
+      <div class="dr-top">
+        <span class="dr-name">${dom.id} — ${dom.title}</span>
+        <span class="dr-score-label" style="color:${bc}">${pct}/100</span>
+      </div>
+      <div class="dr-bar-bg"><div class="dr-bar-fill" style="width:${pct}%;background:${bc}"></div></div>
+      <div class="dr-band">${bandLabelFor(pct)}</div>
+    </div>`;
+  });
+
+  // Findings — 3 lowest-scoring domains
+  const sorted = DOMAINS.map((_, i) => ({ i, pct: domainPct(i) })).sort((a, b) => a.pct - b.pct);
+  const fc = document.getElementById('r-findings');
+  fc.innerHTML = '';
+  let showCount = 0;
+  const borderColors = ['#E24B4A', '#BA7517', '#1A2E5A'];
+  sorted.forEach((s, rank) => {
+    if (rank > 2 || s.pct >= 75) return;
+    const f = FINDINGS[s.i];
+    const bc = borderColors[showCount];
+    fc.innerHTML += `<div class="finding" style="border-left-color:${bc}">
+      <div class="finding-priority" style="color:${bc}">Priority ${showCount + 1} — ${DOMAINS[s.i].title}</div>
+      <h3>${f.title}</h3>
+      <p>${f.body}</p>
+    </div>`;
+    showCount++;
+  });
+  if (showCount === 0) {
+    fc.innerHTML = `<div style="font-size:14px;color:#4A5568;padding:.5rem 0;line-height:1.6">All domains scored at Managed or above. Sustain current practices and focus continuous improvement energy on the lowest-scoring area as capabilities evolve.</div>`;
+  }
+
+  // Animate bars after render
+  setTimeout(() => {
+    document.querySelectorAll('.dr-bar-fill').forEach(b => {
+      const w = b.style.width;
+      b.style.width = '0%';
+      requestAnimationFrame(() => { b.style.width = w; });
+    });
+  }, 100);
+}
+
+function restart() {
+  state.domain = 0;
+  for (const k in state.answers) delete state.answers[k];
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('assessment').style.display = 'block';
+  buildPanels();
+  switchPanel();
+  updateNav();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── INIT ───────────────────────────────────────────────────────────────────
+buildPanels();
+buildDomainNav();
+updateNav();
+</script>
+</body>
+</html>
